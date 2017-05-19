@@ -24,4 +24,4 @@ ptyhon vimeodl.py [-h] [-o SAVE_PATH] [-r] url
      current working directory
 * -r resume from the last downloaded video if not used download 
      all videos from start
-* url a vimeo url
+* url a vimeo channel or group or collection url
