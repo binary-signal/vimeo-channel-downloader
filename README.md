@@ -1,5 +1,13 @@
 # vimeo-channel-downloader
-Python script that downloads all videos in a vimeo channel 
+You want to download many videos from vimeo ? 
+Oh man too many clicks and hassle why not sit back, relax and use 
+this awseome Python3 script. It will download all videos in a vimeo
+channel, just give it a vimeourl nothing else. Plus it can resume 
+from where it stopped when things get frisky wll i mean if something
+bad happens.
+
+
+Ι hope(/think) it works with Python2 haven't tested it yet good luck.
 
 
 # Installation
