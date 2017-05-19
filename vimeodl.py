@@ -14,14 +14,13 @@ import os
 
 class VimeoLinkExtractor():
     """
-    Base class for parsing and extracting 
+    Base class for parsing and extracting
     links from vimeo website
     """
     def __init__(self, url):
         self.videos = queue.Queue()
         self.domain = "https://vimeo.com/"
         self.root_url = url.split("https://vimeo.com/", 1)[1]
-        self.pagenum = 1
         self.waitTime = 1
 
     def get_content(self, page_soup):
@@ -75,7 +74,7 @@ class VimeoDownloader:
     def __init__(self, url, out_dir, resume):
         self.out_dir = out_dir
         self.resume_file = Path(out_dir + os.sep + "video_links.p")
-        self.count = 1
+        self.count = 0
         self.total = None
         self.vd = None
         self.urls = list()
@@ -139,10 +138,11 @@ class VimeoDownloader:
                 print("Already downloaded : {}\n\n".format(url))
                 self.count += 1
             else:
+                self.count += 1
                 print("Downloading... {}/{} {}\n\n".format(
                     self.count, self.total, videopath))
                 best.download(filepath=self.out_dir, quiet=False)
-                self.count += 1
+
 
                 self.urls.remove(url)  # remove downloaded link from the list
             # save the updated list to a file to resume if something happens
@@ -150,7 +150,7 @@ class VimeoDownloader:
             pickle.dump(self.urls, open(self.out_dir + os.sep
                                         + "video_links.p", "wb"))
 
-        print("Download finished: ", end="")
+        print("Download finished [{}/{}]: ".format(self.count, self.total), end="")
         if self.count == self.total:
             print("All videos downloaded successfully ")
             os.remove(self.datadir + os.sep + "video_links.p")
@@ -162,7 +162,7 @@ def fetch_page(url):
     """
     Fetch the page specified by the url and return
     a beautiful soup object of the url fetched
-    :param url: 
+    :param url:
     :return: soup object
     """
     response = requests.get(url)
@@ -203,6 +203,3 @@ if __name__ == "__main__":
 
     vim = VimeoDownloader(url, save_path, resume)
     vim.download()
-
-
-
