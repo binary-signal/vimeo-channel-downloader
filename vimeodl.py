@@ -54,7 +54,7 @@ class VimeoLinkExtractor():
             return None
 
     def extract(self):
-        soup = self.fetch_page(self.domain + self.root_url)
+        soup = fetch_page(self.domain + self.root_url)
         if soup is not None:
             self.get_content(soup)
             while True:
@@ -190,7 +190,7 @@ def check_arg(args=None):
 
     results = parser.parse_args(args)
     return (results.url,
-            results.savedir,
+            results.save_path,
             results.resume)
 
 if __name__ == "__main__":
