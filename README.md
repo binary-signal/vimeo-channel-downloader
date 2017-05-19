@@ -3,7 +3,7 @@ You want to download many videos from vimeo channel ? or
 How about all videos in a channel with 1k videos? Oh man 
 too many clicks and hassle why not sit back, relax and use 
 this awseome Python3 script. It will download all videos 
-in a vimeo channel, just give it a vimeourl nothing else.
+in a vimeo channel, just give it a vimeo url nothing else.
 Plus it can resume from where it stopped when things get 
 frisky well if something bad happens.
 
