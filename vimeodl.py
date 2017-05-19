@@ -60,7 +60,7 @@ class VimeoLinkExtractor():
             while True:
                 if self.has_next_page(soup):
                     next_url = self.domain + self.get_next_page(soup)
-                    soup = self.fetch_page(next_url)
+                    soup = fetch_page(next_url)
                     self.get_content(soup)
                     if self.videos.qsize() % 100 == 0:
                         print("\n[Throttle for {} sec] \n".format(
