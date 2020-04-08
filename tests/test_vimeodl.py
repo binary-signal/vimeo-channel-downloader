@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from vimeodl import __version__
 from vimeodl.vimeo import VimeoLinkExtractor, VimeoDownloader
 

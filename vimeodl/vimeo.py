@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from typing import Optional, Union, Tuple, List, Dict
 import pickle
 import queue
@@ -12,7 +15,7 @@ from bs4 import BeautifulSoup
 
 from vimeodl import log
 
-__all__ = ["VimeoLinkExtractor", "VimeoDownloader"]
+__all__ = ["VimeoDownloader"]
 
 __http = requests.Session()
 
@@ -111,7 +114,7 @@ class VimeoDownloader:
 
         while not self.queue.empty():
             url = self.queue.get()
-            video = vimeo.new(url)
+            video = vimeo.new(url, size=True, basic=True)
 
             print(
                 "Title: {}    - Duration: {} \nUrl: {}".format(

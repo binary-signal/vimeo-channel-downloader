@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import sys
 import argparse
 
 from vimeodl import log
-from vimeodl.vimeo import VimeoDownloader, VimeoLinkExtractor
+from vimeodl.vimeo import VimeoDownloader
 
 
 def check_arg():
