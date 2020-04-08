@@ -1,6 +1,7 @@
 import logging
 import sys
 
+__version__ = "0.2.0"
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -15,5 +16,6 @@ log.addHandler(log_handler)
 
 
 __all__ = [
+    "__version__",
     "log",
 ]

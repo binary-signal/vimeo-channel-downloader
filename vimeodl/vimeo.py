@@ -12,7 +12,9 @@ from bs4 import BeautifulSoup
 
 from vimeodl import log
 
-http = requests.Session()
+__all__ = ["VimeoLinkExtractor", "VimeoDownloader"]
+
+__http = requests.Session()
 
 
 class VimeoLinkExtractor:
@@ -21,10 +23,11 @@ class VimeoLinkExtractor:
     links from vimeo website
     """
 
+    DOMAIN = "https://vimeo.com/"
+
     def __init__(self, url):
         self.videos = queue.Queue()
-        self.domain = "https://vimeo.com/"
-        self.root_url = url.split("https://vimeo.com/", maxsplit=1)[1]
+        self.root_url = url.split(self.DOMAIN, maxsplit=1)[1]
         self.waitTime = 1
 
     def get_content(self, page_soup: BeautifulSoup):
@@ -36,8 +39,8 @@ class VimeoLinkExtractor:
                 for href in hrefs:
                     if "/videos/page" not in href["href"]:
                         vid_uri = href["href"].split("/")[-1]
-                        log.info("\tLink: {}{}".format(self.domain, vid_uri))
-                        self.videos.put(self.domain + vid_uri)
+                        log.info("\tLink: {}{}".format(self.DOMAIN, vid_uri))
+                        self.videos.put(self.DOMAIN + vid_uri)
 
     @staticmethod
     def has_next_page(soup: BeautifulSoup) -> bool:
@@ -57,12 +60,12 @@ class VimeoLinkExtractor:
         return None
 
     def extract(self):
-        soup = fetch_page(self.domain + self.root_url)
+        soup = fetch_page(self.DOMAIN + self.root_url)
         if soup:
             self.get_content(soup)
             while True:
                 if self.has_next_page(soup):
-                    next_url = self.domain + self.get_next_page(soup)
+                    next_url = self.DOMAIN + self.get_next_page(soup)
                     soup = fetch_page(next_url)
                     sleep(0.2)
                     self.get_content(soup)
@@ -134,11 +137,7 @@ class VimeoDownloader:
                 self.count += 1
             else:
                 self.count += 1
-                print(
-                    "Downloading... {}/{} {}\n\n".format(
-                        self.count, self.total, videopath
-                    )
-                )
+                log.info(f"Downloading... {self.count}/{self.total} {videopath}")
                 best_video.download(filepath=self.out_dir, quiet=False)
 
                 self.urls.remove(url)  # remove downloaded link from the list
@@ -146,23 +145,22 @@ class VimeoDownloader:
             # from there
             pickle.dump(self.urls, open(self.out_dir + os.sep + "video_links.p", "wb"))
 
-        print("Download finished [{}/{}]: ".format(self.count, self.total), end="")
+        log.info("Download finished [{}/{}]: ".format(self.count, self.total), end="")
         if self.count == self.total:
-            print("All videos downloaded successfully ")
+            log.info("All videos downloaded successfully ")
             os.remove(self.datadir + os.sep + "video_links.p")
         else:
-            print("Some videos failed to download run again")
+            log.warning("Some videos failed to download run again")
 
 
 def fetch_page(url: str) -> BeautifulSoup:
     """
-    Fetch the page specified by the url and return
-    a beautiful soup object of the url fetched
+    Return BeautifulSoup object after successfully fetched url
     :param url: Url like string
-    :return: soup object
+    :return: BeautifulSoup object of url
     """
 
-    response = http.get(url)
+    response = __http.get(url)
     if response.status_code != 200:
         response.raise_for_status()
     return BeautifulSoup(response.text, "html.parser")
